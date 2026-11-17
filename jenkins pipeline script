@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/aarushtechnologies/java1.git'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh "mvn clean package"
+            }
+        }
+        stage('CQT') {
+            steps {
+                withSonarQubeEnv("mysonar"){
+		        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+		        }
+            }
+        }
+    }
+}
