@@ -1,0 +1,89 @@
+Sonar Installation :
+
+Download Sonarqube - Community Version zip file
+
+MOVE your zip file to /opt
+
+# mv sonar....zip /opt
+
+STEP-1: cd /opt/ 
+STEP-2: unzip filename 
+STEP-3: useradd sonar 
+STEP-4: chown sonar:sonar filename  -R 
+STEP-5: chmod 777 filename -R 
+STEP-6: su - sonar 
+STEP-7: cd /opt 
+STEP-8: cd sonar—/bin/linux/ 
+./sonar.sh start 
+./sonar status 
+LOGIN INTO WEBPAGE WITH PUBLIC IP AND 9000 PORT 
+
+username: admin 
+password: admin 
+
+
+-----------------
+1. Create token in sonar
+	My Account 
+	Security
+	Create a token - Project
+
+sqa_50179fd93fdc36d3e6d86ee4a2dd3724cca15f94
+
+
+2. Jenkins : 
+	Plugin : Sonarqube Scanner
+
+	system
+		Sonar Installa
+		Add sonar - 
+		
+		name = mysonar
+		server url - localhost:9000
+
+		server auth - Add 
+		secreat text - paste token 
+		id - sonar (anything) 
+
+		Save
+--------------------
+	Tools - 
+		SonarQ Scanner Installation:
+		Add SQ Scanner
+		Name - mysonar
+			Check - Install Auto
+
+		Save
+
+
+
+
+
+---------------------
+
+Script :
+
+stage("CQT"){
+	steps{
+		withSonarQubeEnv("mysonar"){
+		sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:sonar"
+		}
+	}
+}
+
+-------------------
+
+
+Error while Installing SonarQube - Plugin
+
+# nmcli connection modify enp0s3 ipv4.method auto
+
+# nmcli connection modify enp0s3 connection.autoconnect yes
+
+# nmcli connection down enp0s3
+
+TO verify :
+
+# ip -4 addr show enp0s3
+
+inet 192.168.1.101/24
